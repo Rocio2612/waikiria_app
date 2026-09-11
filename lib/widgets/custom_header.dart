@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
-
+import '../models/cart_service.dart';
+import '../screens/cart_screen.dart';
 /// CustomHeader: barra superior reutilizable.
 /// La usamos en Home, Catálogo, Producto, etc.
 /// Recibe un título y muestra íconos de menú (izquierda) y carrito (derecha).
@@ -38,11 +39,48 @@ class CustomHeader extends StatelessWidget {
           ),
 
           // Ícono de carrito
-          IconButton(
-            icon: const Icon(Icons.shopping_bag_outlined,
-                color: AppColors.marronOscuro),
-            onPressed: () {
-              // TODO: navegar a la pantalla del carrito
+          // Ícono de carrito con badge (contador)
+          ListenableBuilder(
+            listenable: CartService(),
+            builder: (context, _) {
+              final cantidad = CartService().totalItems;
+              return Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.shopping_bag_outlined,
+                      color: AppColors.marronOscuro,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const CartScreen()),
+                      );
+                    },
+                  ),
+                  if (cantidad > 0)
+                    Positioned(
+                      right: 6,
+                      top: 6,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text(
+                          '$cantidad',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              );
             },
           ),
         ],

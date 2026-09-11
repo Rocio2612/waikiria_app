@@ -4,7 +4,7 @@ import '../screens/home_screen.dart';
 import '../screens/catalog_screen.dart';
 import '../screens/lookbook_screen.dart';
 import '../screens/contact_screen.dart';
-
+import '../screens/profile_screen.dart';
 /// AppDrawer: menú lateral que aparece al tocar el ícono ☰.
 /// Se reutiliza en varias pantallas.
 class AppDrawer extends StatelessWidget {
@@ -70,6 +70,15 @@ class AppDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const ContactScreen()),
+                );
+              },
+            ),
+            _DrawerItem(
+              label: 'MI CUENTA',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ProfileScreen()),
                 );
               },
             ),
