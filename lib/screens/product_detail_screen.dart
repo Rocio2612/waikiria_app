@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_colors.dart';
 import '../widgets/custom_header.dart';
 import '../models/producto.dart';
@@ -33,7 +34,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Imagen
+                    // Imagen principal
                     SizedBox(
                       height: 400,
                       width: double.infinity,
@@ -43,8 +44,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         errorBuilder: (_, __, ___) => Container(
                           color: AppColors.cremaOscuro,
                           child: const Center(
-                            child: Icon(Icons.image,
-                                size: 80, color: AppColors.marronClaro),
+                            child: Icon(
+                              Icons.image,
+                              size: 80,
+                              color: AppColors.marronClaro,
+                            ),
                           ),
                         ),
                       ),
@@ -100,7 +104,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 8),
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: seleccionado
                                         ? AppColors.marron
@@ -166,35 +172,39 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           const SizedBox(height: 32),
 
                           // Botón agregar al carrito
-
-                            ElevatedButton(
-                              onPressed: () {
-                                if (_talleSeleccionado == null) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Elegí un talle primero')),
-                                  );
-                                  return;
-                                }
-                                // Agrega al carrito (servicio global)
-                                CartService().agregar(widget.producto, _talleSeleccionado!, _cantidad);
+                          ElevatedButton(
+                            onPressed: () {
+                              if (_talleSeleccionado == null) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'Agregado: ${widget.producto.nombre} ($_talleSeleccionado) x$_cantidad',
-                                    ),
-                                    duration: const Duration(seconds: 2),
+                                  const SnackBar(
+                                    content: Text('Elegí un talle primero'),
                                   ),
                                 );
-                              },
-                              child: const Text('AGREGAR AL CARRITO'),
-                            ),
+                                return;
+                              }
+                              CartService().agregar(
+                                widget.producto,
+                                _talleSeleccionado!,
+                                _cantidad,
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Agregado: ${widget.producto.nombre} ($_talleSeleccionado) x$_cantidad',
+                                  ),
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            },
+                            child: const Text('AGREGAR AL CARRITO'),
+                          ),
+
                           const SizedBox(height: 12),
 
                           // Botón WhatsApp
                           OutlinedButton(
-                            onPressed: () {
-                              // TODO: abrir WhatsApp
-                            },
+                            onPressed: () =>
+                                _consultarPorWhatsApp(widget.producto),
                             style: OutlinedButton.styleFrom(
                               side: const BorderSide(color: AppColors.marron),
                               padding: const EdgeInsets.symmetric(vertical: 14),
@@ -217,7 +227,37 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     );
   }
 
-  Widget _cantidadButton({required IconData icon, required VoidCallback onTap}) {
+  /// Abre WhatsApp con un mensaje prearmado del producto.
+  /// Reemplazá el número 5491112345678 por el de Waikiria.
+  Future<void> _consultarPorWhatsApp(Producto producto) async {
+    final mensaje = 'Hola! Me interesa este producto de Waikiria:\n\n'
+        '📦 ${producto.nombre}\n'
+        '💰 \$${producto.precio.toStringAsFixed(0)}\n'
+        '${_talleSeleccionado != null ? '📏 Talle: $_talleSeleccionado\n' : ''}'
+        '🔢 Cantidad: $_cantidad\n\n'
+        '¿Está disponible?';
+
+    final mensajeCodificado = Uri.encodeComponent(mensaje);
+
+    final url = Uri.parse(
+      'https://wa.me/2615034506?text=$mensajeCodificado',
+    );
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No se pudo abrir WhatsApp')),
+        );
+      }
+    }
+  }
+
+  Widget _cantidadButton({
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
