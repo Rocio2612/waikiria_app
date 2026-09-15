@@ -2,35 +2,11 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../widgets/custom_header.dart';
 import '../widgets/app_drawer.dart';
-import '../widgets/product_card.dart';
-import '../models/producto.dart';
+import '../models/categoria.dart';
+import 'category_screen.dart';
 
-class CatalogScreen extends StatefulWidget {
+class CatalogScreen extends StatelessWidget {
   const CatalogScreen({super.key});
-
-  @override
-  State<CatalogScreen> createState() => _CatalogScreenState();
-}
-
-class _CatalogScreenState extends State<CatalogScreen> {
-  String _categoriaSeleccionada = 'TODOS';
-
-  final List<String> _categorias = [
-    'TODOS',
-    'JEANS',
-    'ABRIGOS',
-    'REMERAS',
-    'ACCESORIOS',
-  ];
-
-  List<Producto> get _productosFiltrados {
-    if (_categoriaSeleccionada == 'TODOS') {
-      return productosDemo;
-    }
-    return productosDemo
-        .where((p) => p.categoria == _categoriaSeleccionada)
-        .toList();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,75 +18,126 @@ class _CatalogScreenState extends State<CatalogScreen> {
           children: [
             const CustomHeader(title: 'CATÁLOGO'),
 
-            // Chips de categorías
-            SizedBox(
-              height: 60,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: _categorias.length,
-                itemBuilder: (context, index) {
-                  final cat = _categorias[index];
-                  final seleccionada = cat == _categoriaSeleccionada;
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _categoriaSeleccionada = cat;
-                      });
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 8, top: 12, bottom: 12),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: seleccionada
-                            ? AppColors.marron
-                            : Colors.transparent,
-                        border: Border.all(color: AppColors.marron),
-                      ),
-                      child: Center(
-                        child: Text(
-                          cat,
-                          style: TextStyle(
-                            fontSize: 11,
-                            letterSpacing: 1.5,
-                            color: seleccionada
-                                ? AppColors.blanco
-                                : AppColors.marronOscuro,
-                          ),
-                        ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 32),
+
+                    // Título "CATÁLOGO" centrado
+                    const Text(
+                      'CATÁLOGO',
+                      style: TextStyle(
+                        fontSize: 22,
+                        letterSpacing: 4,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.marronOscuro,
                       ),
                     ),
-                  );
-                },
-              ),
-            ),
+                    const SizedBox(height: 8),
 
-            // Grid de productos
-            Expanded(
-              child: _productosFiltrados.isEmpty
-                  ? const Center(
-                child: Text(
-                  'No hay productos en esta categoría',
-                  style: TextStyle(color: AppColors.marronOscuro),
+                    // Subtítulo "Explora nuestra esencia"
+                    const Text(
+                      '"Explora nuestra esencia"',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                        color: AppColors.marron,
+                      ),
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Grilla 2x2 con las 4 categorías grandes
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.75,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 20,
+                        ),
+                        itemCount: categorias.length,
+                        itemBuilder: (context, index) {
+                          return _CategoriaCard(categoria: categorias[index]);
+                        },
+                      ),
+                    ),
+
+                    const SizedBox(height: 40),
+                  ],
                 ),
-              )
-                  : GridView.builder(
-                padding: const EdgeInsets.all(16),
-                gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.58,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                ),
-                itemCount: _productosFiltrados.length,
-                itemBuilder: (context, index) {
-                  return ProductCard(producto: _productosFiltrados[index]);
-                },
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Tarjeta grande de categoría: imagen + nombre debajo.
+class _CategoriaCard extends StatelessWidget {
+  final Categoria categoria;
+
+  const _CategoriaCard({required this.categoria});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => CategoryScreen(categoria: categoria),
+          ),
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Imagen de la categoría
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: AppColors.marron,
+                  width: 0.5,
+                ),
+              ),
+              child: Image.asset(
+                categoria.imagen,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                  color: AppColors.cremaOscuro,
+                  child: const Center(
+                    child: Icon(
+                      Icons.image,
+                      color: AppColors.marronClaro,
+                      size: 40,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+
+          // Nombre de la categoría debajo
+          Text(
+            categoria.nombre,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 11,
+              letterSpacing: 2,
+              color: AppColors.marronOscuro,
+            ),
+          ),
+        ],
       ),
     );
   }

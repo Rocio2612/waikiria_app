@@ -1,14 +1,13 @@
-/// Modelo Producto: representa los datos de un producto de Waikiria.
-/// Por ahora usamos imágenes de internet (placeholders).
-/// Más adelante las reemplazamos por las imágenes reales de Figma.
+/// Modelo Producto: cada uno tiene categoria (principal) y subcategoria.
 
 class Producto {
   final String id;
   final String nombre;
   final double precio;
-  final String imagen;      // URL de la imagen
-  final String categoria;   // JEANS, ABRIGOS, REMERAS, ACCESORIOS
-  final List<String> talles; // ['S', 'M', 'L', 'XL']
+  final String imagen;
+  final String categoria;
+  final String subcategoria;
+  final List<String> talles;
 
   const Producto({
     required this.id,
@@ -16,75 +15,208 @@ class Producto {
     required this.precio,
     required this.imagen,
     required this.categoria,
+    required this.subcategoria,
     required this.talles,
   });
 }
 
-/// Lista de productos de prueba (datos estáticos, porque no usamos base de datos).
-/// Estos son los productos que se van a mostrar en el catálogo.
+/// Productos de Waikiria.
+/// Las subcategorías coinciden con las de categoria.dart.
 const List<Producto> productosDemo = [
+  // ============ PANTALONES / Jeans ============
   Producto(
     id: '1',
-    nombre: 'Remera con cuello rojo',
-    precio: 25000,
-    imagen: 'https://picsum.photos/id/1011/400/500',
-    categoria: 'REMERAS',
-    talles: ['S', 'M', 'L', 'XL'],
+    nombre: 'Jean wide beige',
+    precio: 45000,
+    imagen: 'assets/images/jean_beige.jpg',
+    categoria: 'PANTALONES',
+    subcategoria: 'Jean',
+    talles: ['36', '38', '40', '42'],
   ),
   Producto(
     id: '2',
-    nombre: 'Remera cuello bordado',
-    precio: 25000,
-    imagen: 'https://picsum.photos/id/1027/400/500',
-    categoria: 'REMERAS',
-    talles: ['S', 'M', 'L'],
+    nombre: 'Jean wide blanco',
+    precio: 45000,
+    imagen: 'assets/images/jean_blanco.jpg',
+    categoria: 'PANTALONES',
+    subcategoria: 'Jean',
+    talles: ['36', '38', '40', '42'],
   ),
   Producto(
     id: '3',
-    nombre: 'Remera cuello verde',
-    precio: 25000,
-    imagen: 'https://picsum.photos/id/1015/400/500',
-    categoria: 'REMERAS',
-    talles: ['M', 'L', 'XL'],
+    nombre: 'Jean oxford azul',
+    precio: 48000,
+    imagen: 'assets/images/jean_oxford.jpg',
+    categoria: 'PANTALONES',
+    subcategoria: 'Jean',
+    talles: ['36', '38', '40', '42'],
   ),
   Producto(
     id: '4',
-    nombre: 'Jean mom fit',
-    precio: 45000,
-    imagen: 'https://picsum.photos/id/1035/400/500',
-    categoria: 'JEANS',
+    nombre: 'Jean oxford negro',
+    precio: 48000,
+    imagen: 'assets/images/jean_oxford_negro.jpg',
+    categoria: 'PANTALONES',
+    subcategoria: 'Jean',
     talles: ['36', '38', '40', '42'],
   ),
   Producto(
     id: '5',
-    nombre: 'Abrigo largo beige',
-    precio: 65000,
-    imagen: 'https://picsum.photos/id/1062/400/500',
-    categoria: 'ABRIGOS',
-    talles: ['S', 'M', 'L'],
+    nombre: 'Jean wide marrón',
+    precio: 42000,
+    imagen: 'assets/images/jean_tienda_marron.jpg',
+    categoria: 'PANTALONES',
+    subcategoria: 'Jean',
+    talles: ['36', '38', '40'],
   ),
   Producto(
     id: '6',
-    nombre: 'Abrigo de paño marrón',
-    precio: 72000,
-    imagen: 'https://picsum.photos/id/1074/400/500',
-    categoria: 'ABRIGOS',
-    talles: ['M', 'L'],
+    nombre: 'Jean wide negro',
+    precio: 42000,
+    imagen: 'assets/images/jean_tienda_negro.jpg',
+    categoria: 'PANTALONES',
+    subcategoria: 'Jean',
+    talles: ['36', '38', '40'],
   ),
+
+  // ============ PANTALONES / Baggy ============
   Producto(
     id: '7',
-    nombre: 'Cartera de cuero',
-    precio: 38000,
-    imagen: 'https://picsum.photos/id/1080/400/500',
-    categoria: 'ACCESORIOS',
-    talles: ['Único'],
+    nombre: 'Baggy jean',
+    precio: 52000,
+    imagen: 'assets/images/baggie.jpg',
+    categoria: 'PANTALONES',
+    subcategoria: 'Baggy',
+    talles: ['36', '38', '40', '42'],
   ),
+
+  // ============ PANTALONES / Faldas ============
   Producto(
     id: '8',
-    nombre: 'Bufanda de lana',
-    precio: 15000,
-    imagen: 'https://picsum.photos/id/1084/400/500',
+    nombre: 'Falda',
+    precio: 35000,
+    imagen: 'assets/images/faldas.jpg',
+    categoria: 'PANTALONES',
+    subcategoria: 'Falda',
+    talles: ['S', 'M', 'L'],
+  ),
+
+  // ============ REMERAS Y BLUSAS / Camisas ============
+  Producto(
+    id: '9',
+    nombre: 'Camisa clásica',
+    precio: 35000,
+    imagen: 'assets/images/camisa.jpg',
+    categoria: 'REMERAS Y BLUSAS',
+    subcategoria: 'Camisa',
+    talles: ['S', 'M', 'L'],
+  ),
+
+  // ============ REMERAS Y BLUSAS / Blusas ============
+  Producto(
+    id: '10',
+    nombre: 'Blusa jean estampada',
+    precio: 38000,
+    imagen: 'assets/images/blusa_jean_estampado.jpg',
+    categoria: 'REMERAS Y BLUSAS',
+    subcategoria: 'Blusa',
+    talles: ['S', 'M', 'L'],
+  ),
+
+  // ============ REMERAS Y BLUSAS / Musculosas ============
+  Producto(
+    id: '11',
+    nombre: 'Musculosa básica',
+    precio: 18000,
+    imagen: 'assets/images/musculosa.jpg',
+    categoria: 'REMERAS Y BLUSAS',
+    subcategoria: 'Musculosa',
+    talles: ['S', 'M', 'L'],
+  ),
+
+  // ============ REMERAS Y BLUSAS / Tops ============
+  Producto(
+    id: '12',
+    nombre: 'Top',
+    precio: 22000,
+    imagen: 'assets/images/tops.jpg',
+    categoria: 'REMERAS Y BLUSAS',
+    subcategoria: 'Top',
+    talles: ['S', 'M', 'L'],
+  ),
+
+  // ============ ABRIGOS / Buzos ============
+  Producto(
+    id: '13',
+    nombre: 'Buzo gris oversize',
+    precio: 32000,
+    imagen: 'assets/images/buzo_gris.jpg',
+    categoria: 'ABRIGOS',
+    subcategoria: 'Buzo',
+    talles: ['S', 'M', 'L', 'XL'],
+  ),
+
+  // ============ ABRIGOS / Morleys ============
+  Producto(
+    id: '14',
+    nombre: 'Morley marrón',
+    precio: 28000,
+    imagen: 'assets/images/morley_marron.jpg',
+    categoria: 'ABRIGOS',
+    subcategoria: 'Morley',
+    talles: ['S', 'M', 'L', 'XL'],
+  ),
+  Producto(
+    id: '15',
+    nombre: 'Morley negro',
+    precio: 28000,
+    imagen: 'assets/images/morley_negro.jpg',
+    categoria: 'ABRIGOS',
+    subcategoria: 'Morley',
+    talles: ['S', 'M', 'L', 'XL'],
+  ),
+
+  // ============ ACCESORIOS / Carteras ============
+  Producto(
+    id: '16',
+    nombre: 'Cartera de cuero',
+    precio: 38000,
+    imagen: 'assets/images/cartera_cuero.jpg',
     categoria: 'ACCESORIOS',
+    subcategoria: 'Cartera',
+    talles: ['Único'],
+  ),
+
+  // ============ ACCESORIOS / Cinturones ============
+  Producto(
+    id: '17',
+    nombre: 'Cinturón',
+    precio: 15000,
+    imagen: 'assets/images/cinturones.jpg',
+    categoria: 'ACCESORIOS',
+    subcategoria: 'Cinturón',
+    talles: ['Único'],
+  ),
+
+  // ============ ACCESORIOS / Aros ============
+  Producto(
+    id: '18',
+    nombre: 'Aros',
+    precio: 8000,
+    imagen: 'assets/images/aros.jpg',
+    categoria: 'ACCESORIOS',
+    subcategoria: 'Aros',
+    talles: ['Único'],
+  ),
+
+  // ============ ACCESORIOS / Bolsos ============
+  Producto(
+    id: '19',
+    nombre: 'Bolso',
+    precio: 42000,
+    imagen: 'assets/images/bolsos.jpg',
+    categoria: 'ACCESORIOS',
+    subcategoria: 'Bolso',
     talles: ['Único'],
   ),
 ];

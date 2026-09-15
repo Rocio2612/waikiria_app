@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../widgets/custom_header.dart';
 import '../widgets/app_drawer.dart';
-import 'catalog_screen.dart';
+import '../models/categoria.dart';
+import 'category_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -11,25 +12,26 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.fondo,
-      drawer: const AppDrawer(), // 👈 activa el menú lateral
+      drawer: const AppDrawer(),
       body: SafeArea(
         child: Column(
           children: [
-            // 1. Header fijo arriba (no se mueve al scrollear)
             const CustomHeader(title: 'WAIKIRIA'),
 
-            // 2. Resto de la pantalla con scroll
+            // Todo el contenido con scroll
             Expanded(
               child: ListView(
                 children: [
+                  _buildBarraPromos(),
                   _buildBanner(),
-                  const SizedBox(height: 24),
-                  _buildColeccionSection(context),
                   const SizedBox(height: 40),
-                  _buildLookbookSection(),
+                  _buildCatalogoSection(context),
+                  const SizedBox(height: 40),
+                  _buildLookbookSection(context),
                   const SizedBox(height: 40),
                   _buildContactoSection(),
                   const SizedBox(height: 40),
+                  _buildFooter(),
                 ],
               ),
             ),
@@ -39,38 +41,87 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 🔻 Banner principal con imagen + texto encima
+  // 🔻 Barra de promos
+  Widget _buildBarraPromos() {
+    return Container(
+      color: AppColors.marron,
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: const [
+          Text(
+            '10% OFF TRANSFERENCIA / 15% OFF EFECTIVO',
+            style: TextStyle(
+              color: AppColors.blanco,
+              fontSize: 9,
+              letterSpacing: 0.5,
+            ),
+          ),
+          Text(
+            'GIFT CARD',
+            style: TextStyle(
+              color: AppColors.blanco,
+              fontSize: 9,
+              letterSpacing: 0.5,
+            ),
+          ),
+          Text(
+            'ENVÍOS',
+            style: TextStyle(
+              color: AppColors.blanco,
+              fontSize: 9,
+              letterSpacing: 0.5,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 🔻 Banner principal
   Widget _buildBanner() {
     return SizedBox(
-      height: 350,
+      height: 400,
       child: Stack(
         children: [
-          // Fondo: imagen placeholder (por ahora un color)
-          Container(
-            color: AppColors.cremaOscuro,
-            child: const Center(
-              child: Icon(Icons.image, size: 80, color: AppColors.marronClaro),
+          // Imagen de fondo
+          SizedBox.expand(
+            child: Image.asset(
+              'assets/images/modelo.jpg',
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => Container(
+                color: AppColors.cremaOscuro,
+                child: const Center(
+                  child: Icon(
+                    Icons.image,
+                    size: 80,
+                    color: AppColors.marronClaro,
+                  ),
+                ),
+              ),
             ),
           ),
 
-          // Texto encima
+          // Botón VER COLECCIÓN abajo
           Positioned(
             bottom: 40,
             left: 0,
             right: 0,
             child: Center(
-              child: Column(
-                children: [
-                  const Text(
-                    'VER COLECCIÓN',
-                    style: TextStyle(
-                      color: AppColors.blanco,
-                      fontSize: 14,
-                      letterSpacing: 4,
-                      backgroundColor: AppColors.marron,
-                    ),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+                color: AppColors.marron,
+                child: const Text(
+                  'VER COLECCIÓN',
+                  style: TextStyle(
+                    color: AppColors.blanco,
+                    fontSize: 12,
+                    letterSpacing: 3,
                   ),
-                ],
+                ),
               ),
             ),
           ),
@@ -79,153 +130,357 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 🔻 Sección de colección con tarjetas de categoría
-  Widget _buildColeccionSection(BuildContext context) {
+  // 🔻 Sección CATÁLOGO con las 4 tarjetas grandes
+  Widget _buildCatalogoSection(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          child: Text(
-            'COLECCIÓN',
-            style: TextStyle(
-              fontSize: 18,
-              letterSpacing: 4,
-              color: AppColors.marronOscuro,
-            ),
+        const Text(
+          'CATÁLOGO',
+          style: TextStyle(
+            fontSize: 22,
+            letterSpacing: 4,
+            fontWeight: FontWeight.w500,
+            color: AppColors.marronOscuro,
           ),
         ),
-        const SizedBox(height: 16),
-        SizedBox(
-          height: 60,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            children: const [
-              _CategoryChip(label: 'JEANS'),
-              _CategoryChip(label: 'ABRIGOS'),
-              _CategoryChip(label: 'REMERAS'),
-              _CategoryChip(label: 'ACCESORIOS'),
-            ],
+        const SizedBox(height: 8),
+        const Text(
+          '"Explora nuestra esencia"',
+          style: TextStyle(
+            fontSize: 12,
+            fontStyle: FontStyle.italic,
+            color: AppColors.marron,
+          ),
+        ),
+        const SizedBox(height: 24),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.75,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 20,
+            ),
+            itemCount: categorias.length,
+            itemBuilder: (context, index) {
+              final cat = categorias[index];
+              return GestureDetector(
+                onTap: () {
+                  // Va DIRECTO a la categoría seleccionada
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => CategoryScreen(categoria: cat),
+                    ),
+                  );
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppColors.marron,
+                            width: 0.5,
+                          ),
+                        ),
+                        child: Image.asset(
+                          cat.imagen,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Container(
+                            color: AppColors.cremaOscuro,
+                            child: const Center(
+                              child: Icon(
+                                Icons.image,
+                                color: AppColors.marronClaro,
+                                size: 40,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      cat.nombre,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        letterSpacing: 2,
+                        color: AppColors.marronOscuro,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ],
     );
   }
 
-  // 🔻 Lookbook con 2 imágenes
-  Widget _buildLookbookSection() {
+  // 🔻 Sección LOOKBOOK con 4 fotos con nombres
+  Widget _buildLookbookSection(BuildContext context) {
+    final estilos = [
+      {'nombre': 'URBANO', 'imagen': 'assets/images/outfit_chaleco_beige_jean.jpg'},
+      {'nombre': 'CLÁSICO', 'imagen': 'assets/images/morley_marron.jpg'},
+      {'nombre': 'ELEGANTE', 'imagen': 'assets/images/conj_camp_cuero.jpeg'},
+      {'nombre': 'CASUAL', 'imagen': 'assets/images/conj_blusa_1.jpeg'},
+    ];
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          child: Text(
-            'LOOKBOOK',
-            style: TextStyle(
-              fontSize: 18,
-              letterSpacing: 4,
-              color: AppColors.marronOscuro,
-            ),
+        const Text(
+          'LOOKBOOK',
+          style: TextStyle(
+            fontSize: 22,
+            letterSpacing: 4,
+            fontWeight: FontWeight.w500,
+            color: AppColors.marronOscuro,
           ),
         ),
-        const SizedBox(height: 16),
-        SizedBox(
-          height: 260,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            children: [
-              _buildLookbookCard(),
-              const SizedBox(width: 16),
-              _buildLookbookCard(),
-            ],
+        const SizedBox(height: 8),
+        const Text(
+          '"Una visión de nuestra última colección"',
+          style: TextStyle(
+            fontSize: 12,
+            fontStyle: FontStyle.italic,
+            color: AppColors.marron,
+          ),
+        ),
+        const SizedBox(height: 24),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.8,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 16,
+            ),
+            itemCount: estilos.length,
+            itemBuilder: (context, index) {
+              final estilo = estilos[index];
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Image.asset(
+                      estilo['imagen']!,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        color: AppColors.cremaOscuro,
+                        child: const Center(
+                          child: Icon(
+                            Icons.image,
+                            color: AppColors.marronClaro,
+                            size: 40,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    estilo['nombre']!,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      letterSpacing: 2,
+                      color: AppColors.marronOscuro,
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ],
     );
   }
 
-  Widget _buildLookbookCard() {
-    return Container(
-      width: 180,
-      color: AppColors.cremaOscuro,
-      child: const Center(
-        child: Icon(Icons.checkroom, size: 60, color: AppColors.marronClaro),
-      ),
-    );
-  }
-
-  // 🔻 Sección de contacto al final del scroll
+  // 🔻 Sección CONTACTO (formulario + datos)
   Widget _buildContactoSection() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Center(
+            child: Text(
+              'CONTACTANOS',
+              style: TextStyle(
+                fontSize: 22,
+                letterSpacing: 4,
+                fontWeight: FontWeight.w500,
+                color: AppColors.marronOscuro,
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Center(
+            child: Text(
+              'Escribinos y en breve nos pondremos en contacto',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                fontStyle: FontStyle.italic,
+                color: AppColors.marron,
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          // Formulario
+          _campoFormulario('NOMBRE'),
+          const SizedBox(height: 16),
+          _campoFormulario('EMAIL'),
+          const SizedBox(height: 16),
+          _campoMensaje('MENSAJE'),
+
+          const SizedBox(height: 20),
+
+          // Botón ENVIAR
+          Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 40,
+                vertical: 12,
+              ),
+              color: AppColors.marron,
+              child: const Text(
+                'ENVIAR',
+                style: TextStyle(
+                  color: AppColors.blanco,
+                  fontSize: 12,
+                  letterSpacing: 3,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _campoFormulario(String label) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 10,
+            letterSpacing: 2,
+            color: AppColors.marronOscuro,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Container(
+          height: 40,
+          color: AppColors.cremaOscuro,
+        ),
+      ],
+    );
+  }
+
+  Widget _campoMensaje(String label) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 10,
+            letterSpacing: 2,
+            color: AppColors.marronOscuro,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Container(
+          height: 80,
+          color: AppColors.cremaOscuro,
+        ),
+      ],
+    );
+  }
+
+  // 🔻 Footer
+  Widget _buildFooter() {
+    return Container(
+      color: AppColors.cremaOscuro,
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
           const Text(
-            'CONTACTANOS',
+            'WAIKIRIA',
             style: TextStyle(
               fontSize: 18,
               letterSpacing: 4,
               color: AppColors.marronOscuro,
             ),
           ),
-          const SizedBox(height: 16),
-          _buildContactoItem(Icons.email_outlined, 'EMAIL'),
-          _buildContactoItem(Icons.chat_bubble_outline, 'WHATSAPP'),
-          _buildContactoItem(Icons.camera_alt_outlined, 'INSTAGRAM'),
-          _buildContactoItem(Icons.location_on_outlined, 'UBICACIÓN'),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildContactoItem(IconData icon, String label) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          Icon(icon, color: AppColors.marronOscuro, size: 22),
-          const SizedBox(width: 16),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
+          const SizedBox(height: 4),
+          const Text(
+            '"Tu estilo, tu identidad."',
+            style: TextStyle(
+              fontSize: 11,
+              fontStyle: FontStyle.italic,
+              color: AppColors.marron,
+            ),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            'ENLACES',
+            style: TextStyle(
+              fontSize: 10,
               letterSpacing: 2,
               color: AppColors.marronOscuro,
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Widget privado para los "chips" de categoría (JEANS, ABRIGOS, etc.)
-class _CategoryChip extends StatelessWidget {
-  final String label;
-
-  const _CategoryChip({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(right: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      decoration: BoxDecoration(
-        color: AppColors.marron,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Center(
-        child: Text(
-          label,
-          style: const TextStyle(
-            color: AppColors.blanco,
-            fontSize: 12,
-            letterSpacing: 2,
+          const SizedBox(height: 6),
+          const Text(
+            'INICIO  ·  CATÁLOGO  ·  LOOKBOOK',
+            style: TextStyle(
+              fontSize: 10,
+              color: AppColors.marron,
+            ),
           ),
-        ),
+          const SizedBox(height: 20),
+          const Text(
+            'CONTÁCTANOS',
+            style: TextStyle(
+              fontSize: 10,
+              letterSpacing: 2,
+              color: AppColors.marronOscuro,
+            ),
+          ),
+          const SizedBox(height: 6),
+          const Text(
+            'Teléfono  ·  TikTok',
+            style: TextStyle(
+              fontSize: 10,
+              color: AppColors.marron,
+            ),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            '© 2026 WAIKIRIA. Todos los derechos reservados.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 9,
+              color: AppColors.marron,
+            ),
+          ),
+        ],
       ),
     );
   }
