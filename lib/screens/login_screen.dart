@@ -22,7 +22,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _ingresar() {
-    // Por ahora solo navega al Home (sin autenticación real)
+    // Validación simple
+    if (_emailController.text.trim().isEmpty ||
+        _passwordController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Completá email y contraseña'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const HomeScreen()),

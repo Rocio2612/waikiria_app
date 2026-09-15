@@ -15,8 +15,7 @@ class ProfileScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const CustomHeader(title: 'MI CUENTA'),
-
+            const CustomHeader(title: 'MI CUENTA', mostrarVolver: true),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),

@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../models/cart_service.dart';
 import '../screens/cart_screen.dart';
+
 /// CustomHeader: barra superior reutilizable.
-/// La usamos en Home, Catálogo, Producto, etc.
-/// Recibe un título y muestra íconos de menú (izquierda) y carrito (derecha).
+/// - Si [mostrarVolver] es true, muestra flecha ← (volver atrás)
+/// - Si es false, muestra ☰ (abrir menú lateral)
 class CustomHeader extends StatelessWidget {
   final String title;
+  final bool mostrarVolver;
 
-  const CustomHeader({super.key, required this.title});
+  const CustomHeader({
+    super.key,
+    required this.title,
+    this.mostrarVolver = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +24,22 @@ class CustomHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Ícono de menú (☰) - abre el Drawer
+          // Ícono izquierdo: ☰ o ←
           IconButton(
-            icon: const Icon(Icons.menu, color: AppColors.marronOscuro),
+            icon: Icon(
+              mostrarVolver ? Icons.arrow_back : Icons.menu,
+              color: AppColors.marronOscuro,
+            ),
             onPressed: () {
-              // Abre el menú lateral (Drawer) del Scaffold
-              Scaffold.of(context).openDrawer();
+              if (mostrarVolver) {
+                Navigator.pop(context);
+              } else {
+                Scaffold.of(context).openDrawer();
+              }
             },
           ),
 
-          // Título centrado
+          // Título
           Text(
             title,
             style: const TextStyle(
@@ -38,8 +50,7 @@ class CustomHeader extends StatelessWidget {
             ),
           ),
 
-          // Ícono de carrito
-          // Ícono de carrito con badge (contador)
+          // Ícono de carrito con badge
           ListenableBuilder(
             listenable: CartService(),
             builder: (context, _) {
@@ -55,7 +66,9 @@ class CustomHeader extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => const CartScreen()),
+                        MaterialPageRoute(
+                          builder: (_) => const CartScreen(),
+                        ),
                       );
                     },
                   ),

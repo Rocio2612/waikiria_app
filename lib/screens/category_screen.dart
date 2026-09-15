@@ -41,8 +41,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         child: Column(
           children: [
             // Header con el nombre de la categoría
-            CustomHeader(title: widget.categoria.nombre),
-
+            CustomHeader(title: widget.categoria.nombre, mostrarVolver: true),
             // Chips de subcategorías
             SizedBox(
               height: 60,

@@ -24,8 +24,7 @@ class LookbookScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const CustomHeader(title: 'LOOKBOOK'),
-            Expanded(
+            const CustomHeader(title: 'LOOKBOOK', mostrarVolver: true),            Expanded(
               child: GridView.builder(
                 padding: const EdgeInsets.all(16),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

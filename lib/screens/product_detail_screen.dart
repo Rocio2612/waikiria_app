@@ -27,8 +27,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            const CustomHeader(title: 'PRODUCTO'),
-
+            const CustomHeader(title: 'PRODUCTO', mostrarVolver: true),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(

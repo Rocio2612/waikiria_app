@@ -14,7 +14,7 @@ class CheckoutScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const CustomHeader(title: 'CHECKOUT'),
+            const CustomHeader(title: 'CHECKOUT', mostrarVolver: true),
 
             Expanded(
               child: SingleChildScrollView(

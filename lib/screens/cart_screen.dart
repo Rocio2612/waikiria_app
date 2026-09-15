@@ -15,7 +15,7 @@ class CartScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const CustomHeader(title: 'CARRITO'),
+            const CustomHeader(title: 'CARRITO', mostrarVolver: true),
 
             Expanded(
               // ListenableBuilder escucha cambios del carrito
@@ -79,7 +79,24 @@ class CartScreen extends StatelessWidget {
           _resumenRow('TOTAL', total, bold: true),
 
           const SizedBox(height: 16),
+          // Botón VOLVER
+          OutlinedButton(
+            onPressed: () => Navigator.pop(context),
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: AppColors.marron),
+              padding: const EdgeInsets.symmetric(vertical: 10),
+            ),
+            child: const Text(
+              'VOLVER',
+              style: TextStyle(
+                color: AppColors.marron,
+                letterSpacing: 2,
+                fontSize: 12,
+              ),
+            ),
+          ),
 
+          const SizedBox(height: 12),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
