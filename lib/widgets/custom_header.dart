@@ -50,49 +50,77 @@ class CustomHeader extends StatelessWidget {
             ),
           ),
 
-          // Ícono de carrito con badge
+          // Ícono de carrito con badge + texto CARRITO
           ListenableBuilder(
             listenable: CartService(),
             builder: (context, _) {
               final cantidad = CartService().totalItems;
-              return Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.shopping_bag_outlined,
-                      color: AppColors.marronOscuro,
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const CartScreen(),
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const CartScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                  if (cantidad > 0)
-                    Positioned(
-                      right: 6,
-                      top: 6,
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: const BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Text(
-                          '$cantidad',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          const Icon(
+                            Icons.shopping_bag_outlined,
+                            color: AppColors.marronOscuro,
+                            size: 26,
                           ),
+                          if (cantidad > 0)
+                            Positioned(
+                              right: -8,
+                              top: -6,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 5,
+                                  vertical: 2,
+                                ),
+                                constraints:
+                                const BoxConstraints(minWidth: 18),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: AppColors.fondo,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: Text(
+                                  '$cantidad',
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 2),
+                      const Text(
+                        'CARRITO',
+                        style: TextStyle(
+                          fontSize: 8,
+                          letterSpacing: 1,
+                          color: AppColors.marronOscuro,
                         ),
                       ),
-                    ),
-                ],
+                    ],
+                  ),
+                ),
               );
             },
           ),

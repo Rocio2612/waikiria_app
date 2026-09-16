@@ -156,8 +156,8 @@ class _CartItemTile extends StatelessWidget {
         children: [
           // Imagen chica
           SizedBox(
-            width: 80,
-            height: 100,
+            width: 60,
+            height: 75,
             child: Image.network(
               item.producto.imagen,
               fit: BoxFit.cover,

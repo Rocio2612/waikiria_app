@@ -4,6 +4,7 @@ import '../theme/app_colors.dart';
 import '../widgets/custom_header.dart';
 import '../models/producto.dart';
 import '../models/cart_service.dart';
+import 'cart_screen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Producto producto;
@@ -35,7 +36,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   children: [
                     // Imagen principal
                     SizedBox(
-                      height: 400,
+                      height: 320,
                       width: double.infinity,
                       child: Image.network(
                         producto.imagen,
@@ -188,10 +189,21 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               );
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(
-                                    'Agregado: ${widget.producto.nombre} ($_talleSeleccionado) x$_cantidad',
+                                  content: const Text('✓ Agregado al carrito'),
+                                  duration: const Duration(seconds: 4),
+                                  backgroundColor: AppColors.marron,
+                                  action: SnackBarAction(
+                                    label: 'VER CARRITO',
+                                    textColor: AppColors.blanco,
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => const CartScreen(),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                  duration: const Duration(seconds: 2),
                                 ),
                               );
                             },
