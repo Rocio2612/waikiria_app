@@ -189,11 +189,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               );
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: const Text('✓ Agregado al carrito'),
-                                  duration: const Duration(seconds: 4),
+                                  content: const Text('✓ Agregado'),
+                                  duration: const Duration(seconds: 3),
                                   backgroundColor: AppColors.marron,
+                                  behavior: SnackBarBehavior.floating,
+                                  width: 300,
                                   action: SnackBarAction(
-                                    label: 'VER CARRITO',
+                                    label: 'VER',
                                     textColor: AppColors.blanco,
                                     onPressed: () {
                                       Navigator.push(

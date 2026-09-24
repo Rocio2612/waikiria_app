@@ -158,6 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 20),
 
               // Link de olvidé contraseña
+              // Links de olvidé contraseña + registrarse
               Center(
                 child: Column(
                   children: [

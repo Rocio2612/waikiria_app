@@ -23,6 +23,7 @@ class HomeScreen extends StatelessWidget {
               child: ListView(
                 children: [
                   _buildBarraPromos(),
+                  _buildBuscador(),
                   _buildBanner(),
                   const SizedBox(height: 40),
                   _buildCatalogoSection(context),
@@ -78,54 +79,53 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 🔻 Banner principal
+  // 🔻 Buscador de productos
+  Widget _buildBuscador() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.blanco,
+          border: Border.all(color: AppColors.marron, width: 0.5),
+        ),
+        child: const TextField(
+          decoration: InputDecoration(
+            hintText: 'Buscar productos...',
+            hintStyle: TextStyle(
+              color: AppColors.marron,
+              fontSize: 13,
+              letterSpacing: 0.5,
+            ),
+            prefixIcon: Icon(
+              Icons.search,
+              color: AppColors.marron,
+              size: 20,
+            ),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(vertical: 14),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 🔻 Banner principal (SIN botón VER COLECCIÓN)
   Widget _buildBanner() {
     return SizedBox(
       height: 400,
-      child: Stack(
-        children: [
-          // Imagen de fondo
-          SizedBox.expand(
-            child: Image.asset(
-              'assets/images/modelo.jpg',
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => Container(
-                color: AppColors.cremaOscuro,
-                child: const Center(
-                  child: Icon(
-                    Icons.image,
-                    size: 80,
-                    color: AppColors.marronClaro,
-                  ),
-                ),
-              ),
+      child: Image.asset(
+        'assets/images/modelo.jpg',
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => Container(
+          color: AppColors.cremaOscuro,
+          child: const Center(
+            child: Icon(
+              Icons.image,
+              size: 80,
+              color: AppColors.marronClaro,
             ),
           ),
-
-          // Botón VER COLECCIÓN abajo
-          Positioned(
-            bottom: 40,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                ),
-                color: AppColors.marron,
-                child: const Text(
-                  'VER COLECCIÓN',
-                  style: TextStyle(
-                    color: AppColors.blanco,
-                    fontSize: 12,
-                    letterSpacing: 3,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -160,7 +160,7 @@ class HomeScreen extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 1.0,
+              childAspectRatio: 0.75,
               crossAxisSpacing: 12,
               mainAxisSpacing: 20,
             ),
@@ -169,7 +169,6 @@ class HomeScreen extends StatelessWidget {
               final cat = categorias[index];
               return GestureDetector(
                 onTap: () {
-                  // Va DIRECTO a la categoría seleccionada
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -338,7 +337,6 @@ class HomeScreen extends StatelessWidget {
           ),
           const SizedBox(height: 24),
 
-          // Formulario
           _campoFormulario('NOMBRE'),
           const SizedBox(height: 16),
           _campoFormulario('EMAIL'),
@@ -347,7 +345,6 @@ class HomeScreen extends StatelessWidget {
 
           const SizedBox(height: 20),
 
-          // Botón ENVIAR
           Center(
             child: Container(
               padding: const EdgeInsets.symmetric(
