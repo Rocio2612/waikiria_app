@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import 'home_screen.dart';
+import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -158,15 +159,37 @@ class _LoginScreenState extends State<LoginScreen> {
 
               // Link de olvidé contraseña
               Center(
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    '¿Olvidaste tu contraseña?',
-                    style: TextStyle(
-                      color: AppColors.marron,
-                      fontSize: 13,
+                child: Column(
+                  children: [
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        '¿Olvidaste tu contraseña?',
+                        style: TextStyle(
+                          color: AppColors.marron,
+                          fontSize: 13,
+                        ),
+                      ),
                     ),
-                  ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const RegisterScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        '¿No tenés cuenta? Registrate',
+                        style: TextStyle(
+                          color: AppColors.marronOscuro,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
