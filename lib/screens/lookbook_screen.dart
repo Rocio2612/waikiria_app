@@ -14,19 +14,19 @@ class _LookbookScreenState extends State<LookbookScreen> {
   final estilos = [
     {
       'nombre': 'URBANO',
-      'imagen': 'assets/images/conjRayado.jpeg',
+      'imagen': 'img/images/conjRayado.jpeg',
     },
     {
       'nombre': 'CLÁSICO',
-      'imagen': 'assets/images/conj_chalecoMarronJean.jpeg',
+      'imagen': 'img/images/conj_chalecoMarronJean.jpeg',
     },
     {
       'nombre': 'ELEGANTE',
-      'imagen': 'assets/images/conjElegSi.jpeg',
+      'imagen': 'img/images/conjElegSi.jpeg',
     },
     {
       'nombre': 'CASUAL',
-      'imagen': 'assets/images/conjChica.jpeg',
+      'imagen': 'img/images/conjChica.jpeg',
     },
   ];
 

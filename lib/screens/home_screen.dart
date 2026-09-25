@@ -109,7 +109,7 @@ class HomeScreen extends StatelessWidget {
     return SizedBox(
       height: 400,
       child: Image.asset(
-        'assets/images/modelo.jpg',
+        'img/images/modelo.jpg',
         fit: BoxFit.cover,
         errorBuilder: (_, __, ___) => Container(
           color: AppColors.cremaOscuro,
@@ -219,10 +219,10 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildLookbookSection(BuildContext context) {
     final estilos = [
-      {'nombre': 'URBANO', 'imagen': 'assets/images/conjRayado.jpeg'},
-      {'nombre': 'CLÁSICO', 'imagen': 'assets/images/conj_chalecoMarronJean.jpeg'},
-      {'nombre': 'ELEGANTE', 'imagen': 'assets/images/conjElegSi.jpeg'},
-      {'nombre': 'CASUAL', 'imagen': 'assets/images/conjChica.jpeg'},
+      {'nombre': 'URBANO', 'imagen': 'img/images/conjRayado.jpeg'},
+      {'nombre': 'CLÁSICO', 'imagen': 'img/images/conj_chalecoMarronJean.jpeg'},
+      {'nombre': 'ELEGANTE', 'imagen': 'img/images/conjElegSi.jpeg'},
+      {'nombre': 'CASUAL', 'imagen': 'img/images/conjChica.jpeg'},
     ];
 
     return Column(

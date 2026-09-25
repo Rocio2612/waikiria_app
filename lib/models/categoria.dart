@@ -15,22 +15,22 @@ class Categoria {
 const List<Categoria> categorias = [
   Categoria(
     nombre: 'PANTALONES',
-    imagen: 'assets/images/jean_beige.jpg',
+    imagen: 'img/images/jean_beige.jpg',
     subcategorias: ['Jean', 'Falda', 'Calza', 'Sastre', 'Baggy'],
   ),
   Categoria(
     nombre: 'REMERAS Y BLUSAS',
-    imagen: 'assets/images/camisa.jpg',
+    imagen: 'img/images/camisa.jpg',
     subcategorias: ['Remera', 'Camisa', 'Blusa', 'Musculosa', 'Top'],
   ),
   Categoria(
     nombre: 'ABRIGOS',
-    imagen: 'assets/images/buzo_gris.jpg',
+    imagen: 'img/images/buzo_gris.jpg',
     subcategorias: ['Buzo', 'Campera', 'Morley', 'Tejido'],
   ),
   Categoria(
     nombre: 'ACCESORIOS',
-    imagen: 'assets/images/accesorios.png',
+    imagen: 'img/images/cartera_cuero.jpg',
     subcategorias: ['Cartera', 'Cinturón', 'Aros', 'Bolso'],
   ),
 ];
