@@ -5,8 +5,7 @@ import '../screens/catalog_screen.dart';
 import '../screens/lookbook_screen.dart';
 import '../screens/contact_screen.dart';
 import '../screens/profile_screen.dart';
-/// AppDrawer: menú lateral que aparece al tocar el ícono ☰.
-/// Se reutiliza en varias pantallas.
+
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
@@ -19,8 +18,6 @@ class AppDrawer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 40),
-
-            // Logo / Nombre de la marca
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
               child: Text(
@@ -33,49 +30,62 @@ class AppDrawer extends StatelessWidget {
                 ),
               ),
             ),
-
             const SizedBox(height: 40),
 
-            // Opciones del menú
+            // INICIO
             _DrawerItem(
               label: 'INICIO',
               onTap: () {
-                Navigator.pushReplacement(
+                Navigator.pop(context);
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (_) => const HomeScreen()),
+                      (route) => false,
                 );
               },
             ),
+
+            // CATÁLOGO → pantalla separada
             _DrawerItem(
               label: 'CATÁLOGO',
               onTap: () {
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const CatalogScreen()),
                 );
               },
             ),
+
+            // LOOKBOOK → pantalla separada (igual al Lookbook del Home)
             _DrawerItem(
               label: 'LOOKBOOK',
               onTap: () {
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const LookbookScreen()),
                 );
               },
             ),
+
+            // CONTACTO → pantalla separada
             _DrawerItem(
               label: 'CONTACTO',
               onTap: () {
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const ContactScreen()),
                 );
               },
             ),
+
+            // MI CUENTA → pantalla separada
             _DrawerItem(
               label: 'MI CUENTA',
               onTap: () {
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const ProfileScreen()),
@@ -89,8 +99,6 @@ class AppDrawer extends StatelessWidget {
   }
 }
 
-/// _DrawerItem: widget privado para cada opción del menú.
-/// Lo hacemos aparte para no repetir código 4 veces.
 class _DrawerItem extends StatelessWidget {
   final String label;
   final VoidCallback onTap;

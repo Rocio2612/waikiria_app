@@ -17,8 +17,6 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: [
             const CustomHeader(title: 'WAIKIRIA'),
-
-            // Todo el contenido con scroll
             Expanded(
               child: ListView(
                 children: [
@@ -42,7 +40,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 🔻 Barra de promos
   Widget _buildBarraPromos() {
     return Container(
       color: AppColors.marron,
@@ -79,7 +76,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 🔻 Buscador de productos
   Widget _buildBuscador() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -109,7 +105,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 🔻 Banner principal (SIN botón VER COLECCIÓN)
   Widget _buildBanner() {
     return SizedBox(
       height: 400,
@@ -130,7 +125,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 🔻 Sección CATÁLOGO con las 4 tarjetas grandes
   Widget _buildCatalogoSection(BuildContext context) {
     return Column(
       children: [
@@ -223,13 +217,12 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 🔻 Sección LOOKBOOK con 4 fotos con nombres
   Widget _buildLookbookSection(BuildContext context) {
     final estilos = [
-      {'nombre': 'URBANO', 'imagen': 'assets/images/outfit_chaleco_beige_jean.jpg'},
-      {'nombre': 'CLÁSICO', 'imagen': 'assets/images/morley_marron.jpg'},
-      {'nombre': 'ELEGANTE', 'imagen': 'assets/images/conj_camp_cuero.jpeg'},
-      {'nombre': 'CASUAL', 'imagen': 'assets/images/conj_blusa_1.jpeg'},
+      {'nombre': 'URBANO', 'imagen': 'assets/images/conjRayado.jpeg'},
+      {'nombre': 'CLÁSICO', 'imagen': 'assets/images/conj_chalecoMarronJean.jpeg'},
+      {'nombre': 'ELEGANTE', 'imagen': 'assets/images/conjElegSi.jpeg'},
+      {'nombre': 'CASUAL', 'imagen': 'assets/images/conjChica.jpeg'},
     ];
 
     return Column(
@@ -271,16 +264,19 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Expanded(
-                    child: Image.asset(
-                      estilo['imagen']!,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
-                        color: AppColors.cremaOscuro,
-                        child: const Center(
-                          child: Icon(
-                            Icons.image,
-                            color: AppColors.marronClaro,
-                            size: 40,
+                    child: GestureDetector(
+                      onTap: () => _mostrarFoto(context, estilo['imagen']!),
+                      child: Image.asset(
+                        estilo['imagen']!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => Container(
+                          color: AppColors.cremaOscuro,
+                          child: const Center(
+                            child: Icon(
+                              Icons.image,
+                              color: AppColors.marronClaro,
+                              size: 40,
+                            ),
                           ),
                         ),
                       ),
@@ -305,7 +301,23 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // 🔻 Sección CONTACTO (formulario + datos)
+  void _mostrarFoto(BuildContext context, String imagen) {
+    showDialog(
+      context: context,
+      builder: (_) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.all(16),
+        child: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Image.asset(
+            imagen,
+            fit: BoxFit.contain,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildContactoSection() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -336,15 +348,12 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-
           _campoFormulario('NOMBRE'),
           const SizedBox(height: 16),
           _campoFormulario('EMAIL'),
           const SizedBox(height: 16),
           _campoMensaje('MENSAJE'),
-
           const SizedBox(height: 20),
-
           Center(
             child: Container(
               padding: const EdgeInsets.symmetric(
@@ -380,10 +389,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 6),
-        Container(
-          height: 40,
-          color: AppColors.cremaOscuro,
-        ),
+        Container(height: 40, color: AppColors.cremaOscuro),
       ],
     );
   }
@@ -401,15 +407,11 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 6),
-        Container(
-          height: 80,
-          color: AppColors.cremaOscuro,
-        ),
+        Container(height: 80, color: AppColors.cremaOscuro),
       ],
     );
   }
 
-  // 🔻 Footer
   Widget _buildFooter() {
     return Container(
       color: AppColors.cremaOscuro,
@@ -446,10 +448,7 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(height: 6),
           const Text(
             'INICIO  ·  CATÁLOGO  ·  LOOKBOOK',
-            style: TextStyle(
-              fontSize: 10,
-              color: AppColors.marron,
-            ),
+            style: TextStyle(fontSize: 10, color: AppColors.marron),
           ),
           const SizedBox(height: 20),
           const Text(
@@ -463,19 +462,13 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(height: 6),
           const Text(
             'Teléfono  ·  TikTok',
-            style: TextStyle(
-              fontSize: 10,
-              color: AppColors.marron,
-            ),
+            style: TextStyle(fontSize: 10, color: AppColors.marron),
           ),
           const SizedBox(height: 20),
           const Text(
             '© 2026 WAIKIRIA. Todos los derechos reservados.',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 9,
-              color: AppColors.marron,
-            ),
+            style: TextStyle(fontSize: 9, color: AppColors.marron),
           ),
         ],
       ),

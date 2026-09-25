@@ -15,7 +15,8 @@ class ContactScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const CustomHeader(title: 'CONTACTO', mostrarVolver: true),            Expanded(
+            const CustomHeader(title: 'CONTACTO'),
+            Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
                 child: Column(
