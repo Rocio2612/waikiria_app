@@ -50,7 +50,7 @@ lib/
 │   └── app_theme.dart
 └── widgets/
 ├── custom_header.dart
-├── app_drawer.dart
+├── bottom_nav_bar.dart
 └── product_card.dart
 
 assets/
