@@ -30,7 +30,7 @@ const List<Categoria> categorias = [
   ),
   Categoria(
     nombre: 'ACCESORIOS',
-    imagen: 'img/images/cartera_cuero.jpg',
+    imagen: 'img/images/accesorios.png',
     subcategorias: ['Cartera', 'Cinturón', 'Aros', 'Bolso'],
   ),
 ];

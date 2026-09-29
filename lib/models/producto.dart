@@ -37,7 +37,7 @@ const List<Producto> productosDemo = [
     id: '2',
     nombre: 'Jean wide blanco',
     precio: 45000,
-    imagen: 'img/images/jean_beigee.jpg',
+    imagen: 'img/images/jean_blanco.jpg',
     categoria: 'PANTALONES',
     subcategoria: 'Jean',
     talles: ['36', '38', '40', '42'],
