@@ -24,20 +24,19 @@ class CustomHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Ícono izquierdo: ☰ o ←
-          IconButton(
-            icon: Icon(
-              mostrarVolver ? Icons.arrow_back : Icons.menu,
-              color: AppColors.marronOscuro,
-            ),
-            onPressed: () {
-              if (mostrarVolver) {
+          // Ícono izquierdo: ← (volver) o espacio vacío
+          if (mostrarVolver)
+            IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+                color: AppColors.marronOscuro,
+              ),
+              onPressed: () {
                 Navigator.pop(context);
-              } else {
-                Scaffold.of(context).openDrawer();
-              }
-            },
-          ),
+              },
+            )
+          else
+            const SizedBox(width: 48),  // ← espacio vacío del mismo tamaño
 
           // Título
           Text(
