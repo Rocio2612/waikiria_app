@@ -28,7 +28,7 @@ const List<Producto> productosDemo = [
     id: '1',
     nombre: 'Jean wide beige',
     precio: 45000,
-    imagen: 'img/images/jean_beige.jpg',
+    imagen: 'img/images/https://www.hardconditions.com/articulo/21-pantal-n-vestir-jeans.html?srsltid=AU7gw4UJHD5l7X222_DG4m0c7ACmAwBHGI1puY6ovH_SdvzIIrz-DP8w',
     categoria: 'PANTALONES',
     subcategoria: 'Jean',
     talles: ['36', '38', '40', '42'],

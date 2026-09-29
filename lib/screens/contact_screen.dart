@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_colors.dart';
 import '../widgets/custom_header.dart';
-import '../widgets/app_drawer.dart';
-
+import '../widgets/bottom_nav_bar.dart';
 class ContactScreen extends StatelessWidget {
   const ContactScreen({super.key});
 
@@ -11,7 +10,6 @@ class ContactScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.fondo,
-      drawer: const AppDrawer(),
       body: SafeArea(
         child: Column(
           children: [
@@ -67,6 +65,7 @@ class ContactScreen extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: const BottomNavBar(selectedIndex: 3),
     );
   }
 

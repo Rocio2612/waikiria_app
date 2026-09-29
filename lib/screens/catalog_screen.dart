@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../widgets/custom_header.dart';
-import '../widgets/app_drawer.dart';
 import '../models/categoria.dart';
 import 'category_screen.dart';
+import '../widgets/bottom_nav_bar.dart';
 
 class CatalogScreen extends StatelessWidget {
   const CatalogScreen({super.key});
@@ -12,7 +12,6 @@ class CatalogScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.fondo,
-      drawer: const AppDrawer(),
       body: SafeArea(
         child: Column(
           children: [
@@ -76,6 +75,7 @@ class CatalogScreen extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: const BottomNavBar(selectedIndex: 1),
     );
   }
 }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../widgets/custom_header.dart';
-import '../widgets/app_drawer.dart';
-
+import '../widgets/bottom_nav_bar.dart';
 class LookbookScreen extends StatefulWidget {
   const LookbookScreen({super.key});
 
@@ -34,7 +33,6 @@ class _LookbookScreenState extends State<LookbookScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.fondo,
-      drawer: const AppDrawer(),
       body: SafeArea(
         child: Column(
           children: [
@@ -127,6 +125,7 @@ class _LookbookScreenState extends State<LookbookScreen> {
           ],
         ),
       ),
+      bottomNavigationBar: const BottomNavBar(selectedIndex: 2),
     );
   }
 
