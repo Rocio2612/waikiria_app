@@ -3,6 +3,7 @@ import '../theme/app_colors.dart';
 import '../widgets/custom_header.dart';
 import '../models/categoria.dart';
 import '../models/producto.dart';
+import '../data/repositories/producto_repository.dart';
 import '../widgets/product_card.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -15,22 +16,30 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
+  final ProductoRepository _repository = ProductoRepository();
   late String _subcategoriaSeleccionada;
+  List<Producto> _productos = [];
+  bool _loading = true;
 
   @override
   void initState() {
     super.initState();
-    // Al abrir, mostramos la primera subcategoría por defecto
     _subcategoriaSeleccionada = widget.categoria.subcategorias.first;
+    _cargarProductos();
   }
 
-  /// Filtra los productos por categoría y subcategoría seleccionada
-  List<Producto> get _productosFiltrados {
-    return productosDemo
-        .where((p) =>
-    p.categoria == widget.categoria.nombre &&
-        p.subcategoria == _subcategoriaSeleccionada)
-        .toList();
+  Future<void> _cargarProductos() async {
+    setState(() => _loading = true);
+    final productos = await _repository.getProductosPorSubcategoria(
+      widget.categoria.nombre,
+      _subcategoriaSeleccionada,
+    );
+    if (mounted) {
+      setState(() {
+        _productos = productos;
+        _loading = false;
+      });
+    }
   }
 
   @override
@@ -40,9 +49,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Header con el nombre de la categoría
-            CustomHeader(title: widget.categoria.nombre, mostrarVolver: true),
-            // Chips de subcategorías
+            CustomHeader(
+              title: widget.categoria.nombre,
+              mostrarVolver: true,
+            ),
             SizedBox(
               height: 60,
               child: ListView.builder(
@@ -57,6 +67,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       setState(() {
                         _subcategoriaSeleccionada = sub;
                       });
+                      _cargarProductos();
                     },
                     child: Container(
                       margin: const EdgeInsets.only(
@@ -85,10 +96,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 },
               ),
             ),
-
-            // Grilla de productos
             Expanded(
-              child: _productosFiltrados.isEmpty
+              child: _loading
+                  ? const Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.marron,
+                ),
+              )
+                  : _productos.isEmpty
                   ? const Center(
                 child: Padding(
                   padding: EdgeInsets.all(24),
@@ -111,16 +126,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
                 ),
-                itemCount: _productosFiltrados.length,
+                itemCount: _productos.length,
                 itemBuilder: (context, index) {
                   return ProductCard(
-                    producto: _productosFiltrados[index],
+                    producto: _productos[index],
                   );
                 },
               ),
             ),
-
-            // Botón VOLVER al pie
             Padding(
               padding: const EdgeInsets.all(16),
               child: OutlinedButton(

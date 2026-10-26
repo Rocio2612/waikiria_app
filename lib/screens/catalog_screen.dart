@@ -1,12 +1,39 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../widgets/custom_header.dart';
-import '../models/categoria.dart';
-import 'category_screen.dart';
 import '../widgets/bottom_nav_bar.dart';
+import '../models/categoria.dart';
+import '../data/repositories/categoria_repository.dart';
+import 'category_screen.dart';
 
-class CatalogScreen extends StatelessWidget {
+class CatalogScreen extends StatefulWidget {
   const CatalogScreen({super.key});
+
+  @override
+  State<CatalogScreen> createState() => _CatalogScreenState();
+}
+
+class _CatalogScreenState extends State<CatalogScreen> {
+  final CategoriaRepository _repository = CategoriaRepository();
+  List<Categoria> _categorias = [];
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _cargarCategorias();
+  }
+
+  Future<void> _cargarCategorias() async {
+    setState(() => _loading = true);
+    final categorias = await _repository.getCategorias();
+    if (mounted) {
+      setState(() {
+        _categorias = categorias;
+        _loading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +43,17 @@ class CatalogScreen extends StatelessWidget {
         child: Column(
           children: [
             const CustomHeader(title: 'CATÁLOGO'),
-
             Expanded(
-              child: SingleChildScrollView(
+              child: _loading
+                  ? const Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.marron,
+                ),
+              )
+                  : SingleChildScrollView(
                 child: Column(
                   children: [
                     const SizedBox(height: 32),
-
-                    // Título "CATÁLOGO" centrado
                     const Text(
                       'CATÁLOGO',
                       style: TextStyle(
@@ -34,8 +64,6 @@ class CatalogScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-
-                    // Subtítulo "Explora nuestra esencia"
                     const Text(
                       '"Explora nuestra esencia"',
                       style: TextStyle(
@@ -44,10 +72,7 @@ class CatalogScreen extends StatelessWidget {
                         color: AppColors.marron,
                       ),
                     ),
-
                     const SizedBox(height: 32),
-
-                    // Grilla 2x2 con las 4 categorías grandes
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: GridView.builder(
@@ -56,17 +81,17 @@ class CatalogScreen extends StatelessWidget {
                         gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          childAspectRatio: 1.0,
+                          childAspectRatio: 0.75,
                           crossAxisSpacing: 12,
                           mainAxisSpacing: 20,
                         ),
-                        itemCount: categorias.length,
+                        itemCount: _categorias.length,
                         itemBuilder: (context, index) {
-                          return _CategoriaCard(categoria: categorias[index]);
+                          final cat = _categorias[index];
+                          return _buildCategoriaCard(context, cat);
                         },
                       ),
                     ),
-
                     const SizedBox(height: 40),
                   ],
                 ),
@@ -78,39 +103,27 @@ class CatalogScreen extends StatelessWidget {
       bottomNavigationBar: const BottomNavBar(selectedIndex: 1),
     );
   }
-}
 
-/// Tarjeta grande de categoría: imagen + nombre debajo.
-class _CategoriaCard extends StatelessWidget {
-  final Categoria categoria;
-
-  const _CategoriaCard({required this.categoria});
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildCategoriaCard(BuildContext context, Categoria cat) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => CategoryScreen(categoria: categoria),
+            builder: (_) => CategoryScreen(categoria: cat),
           ),
         );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Imagen de la categoría
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: AppColors.marron,
-                  width: 0.5,
-                ),
+                border: Border.all(color: AppColors.marron, width: 0.5),
               ),
               child: Image.asset(
-                categoria.imagen,
+                cat.imagen,
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
                   color: AppColors.cremaOscuro,
@@ -126,10 +139,8 @@ class _CategoriaCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-
-          // Nombre de la categoría debajo
           Text(
-            categoria.nombre,
+            cat.nombre,
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 11,
