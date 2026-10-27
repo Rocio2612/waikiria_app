@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../widgets/custom_header.dart';
-import '../models/categoria.dart';
+import '../../models/categoria.dart';
 import 'category_screen.dart';
 import '../widgets/bottom_nav_bar.dart';
 

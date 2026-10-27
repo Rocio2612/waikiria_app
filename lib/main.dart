@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'theme/app_theme.dart';
-import 'screens/login_screen.dart';
+import 'ui/screens/login_screen.dart';
+import 'ui/theme/app_theme.dart';
 
 void main() {
   runApp(const WaikiriaApp());

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../widgets/custom_header.dart';
 import '../widgets/bottom_nav_bar.dart';
-import '../models/categoria.dart';
-import '../data/repositories/categoria_repository.dart';
+import '../../models/categoria.dart';
+import '../../data/repositories/categoria_repository.dart';
 import 'category_screen.dart';
 
 class CatalogScreen extends StatefulWidget {

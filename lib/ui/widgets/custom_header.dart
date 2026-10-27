@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
-import '../models/cart_service.dart';
+import '../../models/cart_service.dart';
 import '../screens/cart_screen.dart';
 
 /// CustomHeader: barra superior reutilizable.

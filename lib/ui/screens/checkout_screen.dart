@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_colors.dart';
 import '../widgets/custom_header.dart';
-import '../models/cart_service.dart';
+import '../../models/cart_service.dart';
 import 'success_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {

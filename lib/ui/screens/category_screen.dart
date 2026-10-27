@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../widgets/custom_header.dart';
-import '../models/categoria.dart';
-import '../models/producto.dart';
-import '../data/repositories/producto_repository.dart';
+import '../../models/categoria.dart';
+import '../../models/producto.dart';
+import '../../data/repositories/producto_repository.dart';
 import '../widgets/product_card.dart';
 
 class CategoryScreen extends StatefulWidget {

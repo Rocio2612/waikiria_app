@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
-import '../models/producto.dart';
+import '../../models/producto.dart';
 import '../screens/product_detail_screen.dart';
 
 /// ProductCard: tarjeta reutilizable que muestra un producto.

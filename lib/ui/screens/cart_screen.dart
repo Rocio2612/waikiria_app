@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../widgets/custom_header.dart';
-import '../models/cart_service.dart';
-import '../models/cart_item.dart';
+import '../../models/cart_service.dart';
+import '../../models/cart_item.dart';
 import 'checkout_screen.dart';
 
 class CartScreen extends StatelessWidget {
